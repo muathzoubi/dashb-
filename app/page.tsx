@@ -69,7 +69,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4" dir="rtl">
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl font-bold"> Dashboard</CardTitle>
