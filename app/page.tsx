@@ -48,26 +48,7 @@ export default function Dashboard() {
     }
   };
 
-  useEffect(() => {
-    async function fetchRenewals() {
-      try {
-        const renewalsCollection = collection(db, 'pays')
-        const renewalsSnapshot = await getDocs(renewalsCollection)
-        const renewalsList = renewalsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as HealthCardRenewal[]
-        setRenewals(renewalsList)
-        setLoading(false)
-      } catch (err) {
-        console.error("Error fetching renewals: ", err)
-        setError("Failed to fetch renewals. Please try again later.")
-        setLoading(false)
-      }
-    }
 
-    fetchRenewals()
-  }, [])
 
   if (loading) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>
@@ -79,6 +60,27 @@ export default function Dashboard() {
   useEffect(()=>{
     playNotificationSound2()
   },[renewals.length])
+  async function fetchRenewals() {
+    try {
+      const renewalsCollection = collection(db, 'pays')
+      const renewalsSnapshot = await getDocs(renewalsCollection)
+      const renewalsList = renewalsSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as HealthCardRenewal[]
+      setRenewals(renewalsList)
+      setLoading(false)
+    } catch (err) {
+      console.error("Error fetching renewals: ", err)
+      setError("Failed to fetch renewals. Please try again later.")
+      setLoading(false)
+    }
+  }
+
+
+  useEffect(() => {
+    fetchRenewals()
+  }, [])
   return (
     <div className="container mx-auto p-4" dir="rtl">
       <Card>
