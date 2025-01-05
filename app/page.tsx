@@ -38,6 +38,8 @@ export default function Dashboard() {
   const [renewals, setRenewals] = useState<HealthCardRenewal[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [audio, setAudio] = useState<HTMLAudioElement>();
+
 
   useEffect(() => {
     async function fetchRenewals() {
@@ -59,7 +61,14 @@ export default function Dashboard() {
 
     fetchRenewals()
   }, [])
-
+  const playNotificationSound2 = () => {
+    setAudio(new Audio('/notif.wav'));
+    if (audio) {
+      audio!.play().catch((error) => {
+        console.error('Failed to play sound:', error);
+      });
+    }
+  };
   if (loading) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>
   }
@@ -67,7 +76,9 @@ export default function Dashboard() {
   if (error) {
     return <div className="flex justify-center items-center h-screen text-red-500">{error}</div>
   }
-
+  useEffect(()=>{
+    playNotificationSound2()
+  },[renewals.length])
   return (
     <div className="container mx-auto p-4" dir="rtl">
       <Card>
