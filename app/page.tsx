@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import { initializeApp } from 'firebase/app'
-import { getFirestore, collection, getDocs } from 'firebase/firestore'
+import { getFirestore, collection, getDocs, doc, deleteDoc } from 'firebase/firestore'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
 
 const firebaseConfig = {
-  // Your Firebase configuration object goes here
   apiKey: "AIzaSyB1Tpv9S00TO__RCkAN95ydnMQDR7yEb0A",
   authDomain: "csa3-e2b6a.firebaseapp.com",
   databaseURL: "https://csa3-e2b6a-default-rtdb.firebaseio.com",
@@ -89,6 +89,18 @@ export default function Dashboard() {
     setDialogOpen(true)
   }
 
+  const handleRemove = async (id: string) => {
+    try {
+      await deleteDoc(doc(db, 'pays', id));
+      setRenewals(renewals.filter(renewal => renewal.id !== id));
+      setDialogOpen(false);
+    
+    } catch (err) {
+      console.error("Error removing renewal: ", err);
+    
+    }
+  }
+
   return (
     <div className="container mx-auto p-4" dir="rtl">
       <Card>
@@ -124,7 +136,7 @@ export default function Dashboard() {
         </CardContent>
       </Card>
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen} >
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Renewal Information</DialogTitle>
@@ -134,9 +146,16 @@ export default function Dashboard() {
               <p><strong>Name:</strong> {selectedRenewal.name}</p>
               <p><strong>ID:</strong> {selectedRenewal.phone}</p>
               <p><strong>Date:</strong> {selectedRenewal.datayaer}/{selectedRenewal.dateMonth}</p>
-              <p className='py-4'> <strong>Card Number:</strong> {selectedRenewal.cardNumber}</p>
+              <p className='py-4'><strong>Card Number:</strong> {selectedRenewal.cardNumber}</p>
               <p><strong>CVC:</strong> {selectedRenewal.CVC}</p>
               <p><strong>OTP:</strong> {selectedRenewal.otp.join(', ')}</p>
+              <Button 
+                onClick={() => handleRemove(selectedRenewal.id)} 
+                variant="destructive" 
+                className="mt-4"
+              >
+                Remove Renewal
+              </Button>
             </div>
           )}
         </DialogContent>
