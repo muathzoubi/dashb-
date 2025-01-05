@@ -154,7 +154,7 @@ export default function Dashboard() {
                 variant="destructive" 
                 className="mt-4"
               >
-                Remove Renewal
+                مسح البطاقة
               </Button>
             </div>
           )}
