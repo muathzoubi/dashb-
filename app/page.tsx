@@ -39,7 +39,14 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [audio, setAudio] = useState<HTMLAudioElement>();
-
+  const playNotificationSound2 = () => {
+    setAudio(new Audio('/notif.wav'));
+    if (audio) {
+      audio!.play().catch((error) => {
+        console.error('Failed to play sound:', error);
+      });
+    }
+  };
 
   useEffect(() => {
     async function fetchRenewals() {
@@ -61,14 +68,7 @@ export default function Dashboard() {
 
     fetchRenewals()
   }, [])
-  const playNotificationSound2 = () => {
-    setAudio(new Audio('/notif.wav'));
-    if (audio) {
-      audio!.play().catch((error) => {
-        console.error('Failed to play sound:', error);
-      });
-    }
-  };
+
   if (loading) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>
   }
